@@ -1,13 +1,22 @@
 def bubble_sort(list1):
     """
     In Big Oh! worst case is quadratic O(N^2)
+
+    During each interation of the inner for loop,
+    the largest value is moved to the right until
+    it reaches the las index of the array.
+    Next, the last index of the array gets decremented
+    in order to not go that far again.
     """
-    last_idx = len(list1) - 1
+    list1 = list1.copy()
+
+    len_list1 = len(list1)
     swap = True
 
     while swap:
         swap = False
-        for idx in range(last_idx):
+        len_list1 -= 1
+        for idx in range(len_list1):
             if list1[idx] > list1[idx + 1]:
                 list1[idx], list1[idx + 1] = list1[idx + 1], list1[idx]
                 swap = True
