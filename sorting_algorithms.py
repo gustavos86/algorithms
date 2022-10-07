@@ -82,21 +82,3 @@ def insertion_sort(list1):
         list1[c + 1] = tmp
 
     return list1
-
-test = bubble_sort([2, 6, 8, 9, 1])
-print(test)
-
-test = bubble_sort([9, 8, 7, 6, 5])
-print(test)
-
-test = selection_sort([2, 6, 8, 9, 1])
-print(test)
-
-test = selection_sort([9, 8, 7, 6, 5])
-print(test)
-
-test = insertion_sort([2, 6, 8, 9, 1])
-print(test)
-
-test = insertion_sort([9, 8, 7, 6, 5])
-print(test)
