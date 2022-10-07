@@ -26,6 +26,12 @@ class Stack:
         """
         return self.list1.pop()
 
+    def __len__(self):
+        """
+        Returns the number of elements in the stack
+        """
+        return len(self.list1)
+
 def reverse_string(string1):
     """
     Write a function that uses a stack to reverse a string.
@@ -44,3 +50,69 @@ def reverse_string(string1):
 
 test = reverse_string("abcde")
 print(f"reverse_string {test}")
+
+def linter(string1):
+    """
+    Inspects a line of JavaScript, C, etc code and
+    ensures that there are no brace-related syntax errors
+    """
+    braces = {"(": ")", "[": "]", "{": "}"}
+    stack = Stack()
+
+    for char in string1:
+        if char in braces.keys():
+            stack.push(char)
+        elif char in braces.values():
+            if len(stack):
+                brace = stack.pop()
+            else:
+                # There are no elements in the stack to pop...
+                # There are more closing than opening braces
+                print("ERROR: Braces do not match")
+                print("There are more closing than opening braces")
+                return
+
+            if braces[brace] != char:
+                # the elements do not match!
+                # The opening does not match with the closing brace
+                print("ERROR: Braces do not match")
+                print("The opening does not match with the closing brace")
+                return
+
+    if not len(stack):
+        print("GOOD: All braces have a match!")
+    else:
+        # There are leftovers in the stack...
+        # There are more opening than closing braces
+        print("ERROR: Braces do not match")
+        print("There are more opening than closing braces")
+        return
+
+    
+
+test = "(var x = {y: [1, 2, 3]})"
+linter(test)  # Should be "GOOD: All braces have a match!"
+
+test = "var x = {y: [1, 2, 3]})"
+linter(test)  # Should be ERROR "There are more closing than opening braces"
+
+test = "(var x = y: [1, 2, 3]})"
+linter(test)  # Should be ERROR "The opening does not match with the closing brace"
+
+test = "(var x = {y: 1, 2, 3]})"
+linter(test)  # Should be ERROR "The opening does not match with the closing brace"
+
+test = "(var x = {y: [1, 2, 3})"
+linter(test)  # Should be ERROR "The opening does not match with the closing brace"
+
+test = "(var x = {y: [1, 2, 3])"
+linter(test)  # Should be ERROR "The opening does not match with the closing brace"
+
+test = "(var x = {y: [1, 2, 3]}"
+linter(test)  # Should be ERROR "There are more opening than closing braces"
+
+test = "(var x = {y: [1, 2, 3]}))"
+linter(test)  # Should be ERROR "There are more closing than opening braces"
+
+test = "((var x = {y: [1, 2, 3]})"
+linter(test)  # Should be ERROR "There are more opening than closing braces"
