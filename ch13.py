@@ -33,14 +33,14 @@ def exercise03a(list1):
     Write three different implementations of a function that finds the greatest number within an array.
     Write one function that is O(N2), one that is O(N log N), and one that is O(N).
     """
-    greatest_num = list1[0]
     for i in list1:
+        i_is_the_gresatest = True
         for j in list1:
-            if j > greatest_num:
-                greatest_num = j
+            if j > i:
+                i_is_the_gresatest = False
 
-    return greatest_num
-
+        if i_is_the_gresatest:
+            return i
 
 def exercise03b(list1):
     """
@@ -58,9 +58,9 @@ def exercise03c(list1):
     Write one function that is O(N2), one that is O(N log N), and one that is O(N).
     """
 
-    greatest_num = list1[0]
+    greatest_num_so_far = list1[0]
     for i in list1:
-        if i > greatest_num:
-            greatest_num = i
+        if i > greatest_num_so_far:
+            greatest_num_so_far = i
 
-    return greatest_num
+    return greatest_num_so_far
