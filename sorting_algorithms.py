@@ -82,3 +82,23 @@ def insertion_sort(list1):
         list1[c + 1] = tmp
 
     return list1
+
+def quicksort(array):
+    """
+    O(N log N)
+    """
+    len_array = len(array)
+
+    if len_array == 0:
+        return []
+
+    if len_array == 1:
+        return [array[0]]
+
+    middle = array[len_array // 2]
+
+    before_middle_list = [entry for entry in array if entry < middle]
+    after_middle_list  = [entry for entry in array if entry > middle]
+    middle_list        = [entry for entry in array if entry == middle]
+
+    return quicksort(before_middle_list) + middle_list + quicksort(after_middle_list)
