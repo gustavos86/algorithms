@@ -93,7 +93,6 @@ def quicksort(array):
         return []
 
     if len_array == 1:
-<<<<<<< HEAD
         return array
 
     middle = array[len_array // 2]
@@ -108,14 +107,5 @@ def quicksort(array):
             after_middle_list.append(entry)
         else:
             middle_list.append(entry)
-=======
-        return [array[0]]
-
-    middle = array[len_array // 2]
-
-    before_middle_list = [entry for entry in array if entry < middle]
-    after_middle_list  = [entry for entry in array if entry > middle]
-    middle_list        = [entry for entry in array if entry == middle]
->>>>>>> 0172933614ec18e15ab4816b16a5cddf7595179e
 
     return quicksort(before_middle_list) + middle_list + quicksort(after_middle_list)
