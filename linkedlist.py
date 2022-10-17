@@ -1,6 +1,7 @@
 """
 Chapter 14 - Node-Based Data Structures
 """
+import stacks_queues as sq
 
 class Node:
     """
@@ -10,6 +11,7 @@ class Node:
     def __init__(self, data):
         self.data = data
         self.next_node = None
+        self.previous_node = None
 
 class LinkedList:
     def __init__(self, first_node):
@@ -118,3 +120,106 @@ class LinkedList:
         # node_after_deleted_node, leaving the node we want
         # to delete out of the list:
         current_node.next_node = node_after_deleted_node
+
+    def print_all_elements(self):
+        """
+        Print all elements in the list
+        """
+        current_node = self.first_node
+        current_index = 1
+
+        while current_node:
+            print(f"Node #{current_index} : {current_node.data}")
+            current_node = current_node.next_node
+            current_index += 1
+
+    def return_last_element(self):
+        """
+        Returns the last element from the list
+        """
+        current_node = self.first_node
+
+        while current_node.next_node:
+            current_node = current_node.next_node
+
+        return current_node.data
+
+    def reverse_linked_list(self):
+        """
+        Reverses the list. That is, if the original list is A -> B -> C,
+        all of the list's links should change so that C -> B -> A.
+        """
+        # Instantiate a Stack
+        stack = sq.Stack()
+
+        # Push all Nodes into the Stack
+        current_node = self.first_node
+
+        while current_node:
+            stack.push(current_node)
+            current_node = current_node.next_node
+
+        # Pop node by node from the Stack and link them
+        node_from_stack = stack.pop()
+        self.first_node = node_from_stack
+
+        while len(stack):
+            next_node_from_stack = stack.pop()
+            node_from_stack.next_node = next_node_from_stack
+            node_from_stack = next_node_from_stack
+
+        # Last node in the Linked List should point to None
+        node_from_stack.next_node = None
+
+    def delete_middle_node(self, node):
+        """
+        delete based on node
+        """
+        node.data = node.next_node.data
+        node.next_node = node.next_node.next_node
+
+class DoublyLinkedList:
+    def __init__(self, first_node=None, last_node=None):
+        self.first_node = first_node
+        self.last_node = last_node
+
+    def insert_at_end(self, value):
+        """
+        Inserts to the last of the DoublyLinkedList
+        """
+        new_node = Node(value)
+
+        # If there are no elements yet in the linked list:
+        if not self.first_node:
+            self.first_node = new_node
+            self.last_node = new_node
+        # If the linked list already has at least one node:
+        else:
+            # New Node's previous should be pointing to the last element in the DoublyLinkedList
+            new_node.previous_node = self.last_node
+            # also, this former last Node should be using as next the New Node
+            self.last_node.next_node = new_node
+            # Finally the New Node is becoming the last element in the DoublyLinkedList
+            self.last_node = new_node
+
+    def remove_from_front(self):
+        """
+        Removes from the front  of the DoublyLinkedList
+        """
+        # Identify the first Node
+        removed_node = self.first_node
+        # The new first Node is the 2nd Node so we point to it
+        self.first_node = self.first_node.next_node
+        # The former first Node is returned
+        return removed_node
+
+
+    def print_elements_in_reverse(self):
+        """
+        prints all the elements of the list in reverse order.
+        """
+        current_node = self.last_node
+
+        while current_node:
+            print(f"Node : {current_node.data}")
+            current_node = current_node.previous_node
