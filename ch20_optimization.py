@@ -5,6 +5,8 @@ Techniques for Code Optimization
 Exercises
 The following exercises provide you with the opportunity to practice with optimizing your code.
 """
+import numpy as np
+from collections import defaultdict
 
 def question1():
     """
@@ -137,6 +139,129 @@ def question3():
     result = solution(array)
     print(f"The greatest profit can be ${result}")
 
+def question4():
+    """
+    You're writing a function that accepts an array of numbers and computes the highest product of any two numbers in the array.
+    At first glance, this is easy, as we can just find the two greatest numbers and multiply them. However, our array can contain negative numbers and look like this:
+
+	[5, -10, -6, 9, 4]
+    In this case, it's actually the product of the two lowest numbers, -10 and -6 that yield the highest product of 60.
+
+    We could use nested loops to multiply every possible pair of numbers, but this would take O(N^2) time.
+    Your job is to optimize the function so that it's a speedy O(N).
+    """
+    def solution(array):
+        min1 = float('inf')
+        min2 = float('inf')
+        max1 = float('-inf')
+        max2 = float('-inf')
+        for e in array:
+            if e < 0:  # is negative
+                if e < min1:
+                    min2 = min1
+                    min1 = e
+                elif e < min2:
+                    min2 = e
+            elif e > 0:  # is positive
+                if e > max1:
+                    max2 = max1
+                    max1 = e
+                elif e > max2:
+                    max2 = e
+
+        product_of_mins = min1 * min2
+        product_of_maxs = max1 * max2
+
+        if product_of_mins >= product_of_maxs:
+            return product_of_mins
+        else:
+            return product_of_maxs
+
+
+    array = [5, -10, -6, 9, 4]
+    result = solution(array)
+    print(f"The greatest product of {array} is: {result}")
+
+def question5():
+    """
+    You're creating software that analyzes the data of body temperature readings taken from hundreds of human patients.
+    These readings are taken from healthy people and range from 97.0 degrees Fahrenheit to 99.0 degrees Fahrenheit.
+    An important point: within this application, the decimal point never goes beyond the tenths place.
+
+    Here's a sample array of temperature readings:
+
+	[98.6, 98.0, 97.1, 99.0, 98.9, 97.8, 98.5, 98.2, 98.0, 97.1]
+    You are to write a function that sorts these readings from lowest to highest.
+
+    If you used a classic sorting algorithm such as Quicksort, this would take O(N log N).
+    However, in this case, it's actually possible to write a faster sorting algorithm.
+
+    Yes, that's right. Even though you've learned that the fastest sorts are O(N log N), this case is different.
+    Why? In this case, there's a limited number of possibilities of what the readings will be. In such a case, we can sort these values in O(N).
+    It may be N multiplied by a constant, but that's still considered O(N).
+    """
+    def solution(array):
+        all_possibilities_ordered = [round(e, 1) for e in np.arange(97.0, 99.1, 0.1)]
+
+        array_hashmap = defaultdict(int)
+        for e in array:
+            array_hashmap[e] += 1
+
+        result = []
+        for e in all_possibilities_ordered:
+            if count:=array_hashmap.get(e):
+                result += [e] * count
+
+        return result
+
+    array = [98.6, 98.0, 97.1, 99.0, 98.9, 97.8, 98.5, 98.2, 98.0, 97.1]
+    result = solution(array)
+    print(f"Original array\n{array}\nSorted array\n{result}")
+
+def question6():
+    """
+    You're writing a function that accepts an array of unsorted integers and returns the length of the longest consecutive sequence among them.
+    The sequence is formed by integers that increase by 1. For example, in the array:
+
+    [10, 5, 12, 3, 55, 30, 4, 11, 2]
+    the longest consecutive sequence is 2-3-4-5.
+    These four integers form an increasing sequence because each integer is one greater than the previous one.
+    While there's also a sequence of 10-11-12, it's only a sequence of three integers. In this case, the function should return 4,
+    since that's the length of the longest consecutive sequence that can be formed from this array.
+
+    One more example:
+
+	[19, 13, 15, 12, 18, 14, 17, 11]
+    This array's longest sequence is 11-12-13-14-15, so the function would return 5.
+
+    If we sorted the array, we can then traverse the array just once to find the longest consecutive sequence.
+    However, the sorting itself would take O(N log N). Your job is to optimize the function so that it takes O(N) time.
+    """
+    def solution(array):
+        if not array:
+            return 0
+
+        #sequence_count = 0
+        #current = array[0]
+
+        #for e in array:
+        #    if e == current + 1:
+        #        sequence_count += 1
+        #    else:
+        #        sequence = 0
+        #    current = e
+
+        #return sequence_count
+
+    array1 = [10, 5, 12, 3, 55, 30, 4, 11, 2]  # Result expected: 4
+    array2 = [19, 13, 15, 12, 18, 14, 17, 11]  # Result expected: 5
+
+    result1 = solution(array1)
+    result2 = solution(array2)
+
+    print(f"For {array1} the larges sequence has {result1} numbers")
+    print(f"For {array2} the larges sequence has {result2} numbers")
+
 # Solve Questions
 print(f"== Question 1 ==")
 question1()
@@ -144,3 +269,9 @@ print(f"\n== Question 2 ==")
 question2()
 print(f"\n== Question 3 ==")
 question3()
+print(f"\n== Question 4 ==")
+question4()
+print(f"\n== Question 5 ==")
+question5()
+print(f"\n== Question 6 ==")
+question6()
