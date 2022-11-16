@@ -30,13 +30,14 @@ def question1():
         array_n_hashmap = {}
         players_on_both_teams = []
 
+        # converting the first array into a hash table
         for player in array_n:
             first_name = player.get("first_name")
             last_name  = player.get("last_name")
             full_name  = f"{first_name} {last_name}"
-
             array_n_hashmap[full_name] = True
 
+        # iterating over the second array
         for player in array_m:
             first_name = player.get("first_name")
             last_name  = player.get("last_name")
@@ -80,7 +81,7 @@ def question2():
 
     Using a nested-loops approach would take up to O(N^2). Your job is to optimize the code so that it has a runtime of O(N).
     """
-    def solution(array):
+    def my_solution(array):
         hashmap_of_array = {number: True for number in array}
         #print(f"[DEBUG] hashmap_of_array {hashmap_of_array}")
         
@@ -88,15 +89,26 @@ def question2():
             if not hashmap_of_array.get(num):
                 return num
 
+    def solution(array):
+        expected_sum = 0
+        for e in range(1, len(array)+1):
+            expected_sum += e
+
+        actual_sum = 0
+        for e in array:
+            actual_sum += e
+
+        return expected_sum - actual_sum
+
     array1 = [2, 3, 0, 6, 1, 5]
     array2 = [8, 2, 3, 9, 4, 7, 5, 0, 6]
 
     print(array1)
     result1 = solution(array1)
-    print(f"The missing number is {result1}")
+    print(f"The missing number is {result1}")  # result should be: 4
     print(array2)
     result2 = solution(array2)
-    print(f"The missing number is {result2}")
+    print(f"The missing number is {result2}")  # result should be: 1
 
 def question3():
     """
@@ -120,16 +132,16 @@ def question3():
     Your job is to optimize the code so that the function clocks in at just O(N).
     """
     def solution(array):
-        min_price = float('inf')
+        buy_price = float('inf')
         greatest_profit = 0
 
         for price in array:
-            if price < min_price:
-                min_price = price
+            if price < buy_price:
+                buy_price = price
             else:
-                profit = price - min_price
-                if profit > greatest_profit:
-                    greatest_profit = profit
+                potential_profit = price - buy_price
+                if potential_profit > greatest_profit:
+                    greatest_profit = potential_profit
 
         return greatest_profit
 
@@ -176,7 +188,6 @@ def question4():
             return product_of_mins
         else:
             return product_of_maxs
-
 
     array = [5, -10, -6, 9, 4]
     result = solution(array)
@@ -238,29 +249,53 @@ def question6():
     However, the sorting itself would take O(N log N). Your job is to optimize the function so that it takes O(N) time.
     """
     def solution(array):
+        hashmap_of_array = {number: True for number in array}
+
+        greatest_sequence_length = 0
+        for number in array:
+            if not hashmap_of_array.get(number - 1):
+                sequence_count = 1
+                current_number = number
+                while hashmap_of_array.get(current_number + 1):
+                    sequence_count += 1
+                    current_number += 1
+
+                if sequence_count > greatest_sequence_length:
+                    greatest_sequence_length = sequence_count
+
+        return greatest_sequence_length
+
+    def sorted_bad_solution(array):
         if not array:
             return 0
 
-        #sequence_count = 0
-        #current = array[0]
+        array_sorted = sorted(array)
+        largest_sequence = 0
+        sequence = 1
 
-        #for e in array:
-        #    if e == current + 1:
-        #        sequence_count += 1
-        #    else:
-        #        sequence = 0
-        #    current = e
-
-        #return sequence_count
+        last_idx = len(array_sorted) - 1
+        for idx, number in enumerate(array_sorted):
+            if idx < last_idx:
+                if number + 1 == array_sorted[idx + 1]:
+                    sequence += 1
+                else:
+                    if sequence > largest_sequence:
+                        largest_sequence = sequence
+                    sequence = 1
+        
+        if sequence > largest_sequence:
+            largest_sequence = sequence
+            
+        return largest_sequence
 
     array1 = [10, 5, 12, 3, 55, 30, 4, 11, 2]  # Result expected: 4
-    array2 = [19, 13, 15, 12, 18, 14, 17, 11]  # Result expected: 5
+    array2 = [19, 13, 15, 12, 18, 14, 17, 11, 20, 21, 22, 23, 24, 25, 26]  # Result expected: 5
 
     result1 = solution(array1)
     result2 = solution(array2)
 
-    print(f"For {array1} the larges sequence has {result1} numbers")
-    print(f"For {array2} the larges sequence has {result2} numbers")
+    print(f"For {array1} the largest sequence has {result1} numbers")
+    print(f"For {array2} the largest sequence has {result2} numbers")
 
 # Solve Questions
 print(f"== Question 1 ==")
